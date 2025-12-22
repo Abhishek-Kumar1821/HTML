@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Product — Demo Store</title>
+<style>
+  :root{
+    --bg:#f4f5f7;
+    --card:#fff;
+    --muted:#6b7280;
+    --accent:#ff9900; /* amazon-ish */
+    --accent-2:#232f3e;
+    --max-width:1100px;
+    --radius:8px;
+    --shadow: 0 6px 18px rgba(34,41,47,0.08);
+    --gap:18px;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:linear-gradient(180deg,#f7fafc, var(--bg));
+    color:#111827;
+    padding:30px;
+    display:flex;
+    justify-content:center;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .container{
+    width:100%;
+    max-width:var(--max-width);
+  }
+
+  .product-card{
+    display:grid;
+    grid-template-columns: 1fr 380px;
+    gap:var(--gap);
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:22px;
+    box-shadow:var(--shadow);
+    align-items:start;
+  }
+
+  /* Left: images + details */
+  .gallery{
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+  }
+
+  .thumbs{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    width:72px;
+  }
+  .thumb{
+    width:72px;
+    height:72px;
+    border-radius:6px;
+    overflow:hidden;
+    background:#f3f4f6;
+    border:2px solid transparent;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .thumb img{width:100%; height:100%; object-fit:cover; display:block}
+  .thumb.active{border-color:var(--accent)}
+
+  .main-image{
+    flex:1;
+    background:#fff;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:360px;
+    overflow:hidden;
+    border:1px solid #e6e9ee;
+  }
+  .main-image img{width:100%; height:100%; object-fit:contain; display:block}
+
+  /* product header & meta */
+  .product-info{padding:6px 0}
+  .brand{color:var(--muted); font-size:13px}
+  .title{font-size:20px; font-weight:600; margin:8px 0 10px}
+  .rating{
+    display:flex; gap:8px; align-items:center; color:#111827; font-weight:600;
+  }
+  .rating small{color:var(--muted); font-weight:400}
+
+  .price-row{
+    margin:14px 0;
+    display:flex;
+    gap:12px;
+    align-items:baseline;
+  }
+  .price{
+    font-size:26px;
+    color:var(--accent-2);
+    font-weight:700;
+  }
+  .price .was{font-size:14px; color:var(--muted); text-decoration:line-through; margin-left:8px; font-weight:600}
+
+  .bullets{margin-top:12px; color:var(--muted); line-height:1.6}
+  .buybox{
+    background:linear-gradient(180deg,#fff,#fbfbfc);
+    padding:16px;
+    border-radius:8px;
+    border:1px solid #e6e9ee;
+  }
+
+  .buy-price {font-size:22px; font-weight:700; color:var(--accent-2); margin-bottom:8px}
+  .shipping{color:var(--muted); font-size:14px; margin-bottom:12px}
+
+  .controls{display:flex; gap:10px; align-items:center}
+  .qty{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    border:1px solid #e6e9ee;
+    padding:6px 8px;
+    border-radius:6px;
+    background:#fff;
+  }
+  .qty button{
+    border:0; background:transparent; font-size:18px; cursor:pointer; padding:4px;
+  }
+  .qty input{
+    width:42px; text-align:center; border:0; font-size:15px;
+  }
+
+  .btn{
+    background:var(--accent);
+    color:#fff;
+    border:0;
+    padding:10px 14px;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:600;
+    box-shadow: 0 6px 12px rgba(255,153,0,0.14);
+  }
+  .btn.secondary{
+    background:transparent; border:1px solid #e6e9ee; color:#111827; font-weight:600;
+  }
+
+  /* description & specs & reviews */
+  .tabs{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:1fr 320px;
+    gap:var(--gap);
+  }
+  .desc{
+    background:var(--card);
+    border:1px solid #e6e9ee;
+    padding:16px;
+    border-radius:8px;
+  }
+  .desc h3{margin-top:0}
+  .specs{margin-top:12px}
+  .specs dt{font-weight:600; color:var(--muted)}
+  .reviews{
+    background:var(--card);
+    border:1px solid #e6e9ee;
+    padding:16px;
+    border-radius:8px;
+  }
+
+  /* small helpers */
+  .chip{display:inline-block; padding:6px 8px; background:#eef2ff; color:#3730a3; border-radius:999px; font-weight:600; font-size:13px}
+
+  /* responsive */
+  @media (max-width:980px){
+    .product-card{grid-template-columns:1fr; padding:16px}
+    .tabs{grid-template-columns:1fr}
+    .gallery{flex-direction:column}
+    .thumbs{flex-direction:row; width:100%; order:2}
+    .thumb{width:64px; height:64px}
+    .main-image{min-height:300px}
+  }
+
+  /* small rating stars */
+  .stars{display:inline-flex; gap:4px; color:#f59e0b}
+  .muted-small{color:var(--muted); font-size:14px}
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="product-card" role="main" aria-labelledby="product-title">
+      <div>
+        <div class="gallery" aria-hidden="false">
+          <div class="thumbs" id="thumbs">
+            <button class="thumb active" data-src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?q=80&w=800&auto=format&fit=crop&s=placeholder" aria-label="thumbnail 1">
+              <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?q=80&w=800&auto=format&fit=crop&s=placeholder" alt="thumbnail">
+            </button>
+            <button class="thumb" data-src="https://images.unsplash.com/photo-1580910051076-3f2b2b1fa1b6?q=80&w=800&auto=format&fit=crop&s=placeholder" aria-label="thumbnail 2">
+              <img src="https://images.unsplash.com/photo-1580910051076-3f2b2b1fa1b6?q=80&w=800&auto=format&fit=crop&s=placeholder" alt="thumbnail">
+            </button>
+            <button class="thumb" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800&auto=format&fit=crop&s=placeholder" aria-label="thumbnail 3">
+              <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800&auto=format&fit=crop&s=placeholder" alt="thumbnail">
+            </button>
+          </div>
+
+          <div class="main-image" id="mainImage" aria-live="polite">
+            <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?q=80&w=1200&auto=format&fit=crop&s=placeholder" alt="Product image" id="currentImage">
+          </div>
+        </div>
+
+        <div class="product-info" style="margin-top:16px">
+          <div class="brand">Brand • Model 2025</div>
+          <h1 class="title" id="product-title">UltraComfort Noise-cancelling Headphones — Example Model</h1>
+          <div class="rating" aria-label="4.5 out of 5 stars">
+            <div class="stars" title="4.5 stars" aria-hidden="true">
+              <!-- 5 star svg; showing 4 full, 1 half using inline SVG group for simplicity -->
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#f59e0b" aria-hidden="true"><path d="M12 .587l3.668 7.431L23 9.75l-5.5 5.36L18.334 24 12 19.77 5.666 24 6.5 15.11 1 9.75l7.332-1.732L12 .587z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#f59e0b" aria-hidden="true"><path d="M12 .587l3.668 7.431L23 9.75l-5.5 5.36L18.334 24 12 19.77 5.666 24 6.5 15.11 1 9.75l7.332-1.732L12 .587z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#f59e0b" aria-hidden="true"><path d="M12 .587l3.668 7.431L23 9.75l-5.5 5.36L18.334 24 12 19.77 5.666 24 6.5 15.11 1 9.75l7.332-1.732L12 .587z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#f59e0b" aria-hidden="true"><path d="M12 .587l3.668 7.431L23 9.75l-5.5 5.36L18.334 24 12 19.77 5.666 24 6.5 15.11 1 9.75l7.332-1.732L12 .587z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="url(#half)" aria-hidden="true"><defs><linearGradient id="half"><stop offset="50%" stop-color="#f59e0b"/><stop offset="50%" stop-color="#e5e7eb"/></linearGradient></defs><path d="M12 .587l3.668 7.431L23 9.75l-5.5 5.36L18.334 24 12 19.77 5.666 24 6.5 15.11 1 9.75l7.332-1.732L12 .587z"/></svg>
+            </div>
+            <small class="muted-small">4.5</small>
+            <small class="muted-small">•</small>
+            <small class="muted-small">1,278 ratings</small>
+          </div>
+
+          <div class="price-row">
+            <div class="price">$129.99 <span class="was">$179.99</span></div>
+            <div class="chip" aria-hidden="true">Best seller</div>
+          </div>
+
+          <ul class="bullets">
+            <li>Active noise cancellation with transparency mode</li>
+            <li>40 hours playback, USB‑C fast charge</li>
+            <li>Custom EQ via companion app</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Buy box -->
+      <aside class="buybox" aria-labelledby="buybox">
+        <div id="buybox" class="buybox-title" style="font-weight:700; margin-bottom:6px">Buy with confidence</div>
+        <div class="buy-price" aria-live="polite">$129.99</div>
+        <div class="shipping">Ships from <strong>Demo Warehouse</strong>. Delivery in 3–5 business days.</div>
+
+        <div class="controls" style="margin-bottom:12px">
+          <div class="qty" role="group" aria-label="Quantity selector">
+            <button type="button" id="dec" aria-label="Decrease quantity">−</button>
+            <input type="number" id="qty" value="1" min="1" aria-label="Quantity">
+            <button type="button" id="inc" aria-label="Increase quantity">+</button>
+          </div>
+
+          <button class="btn" id="addToCart">Add to Cart</button>
+        </div>
+
+        <button class="btn secondary" style="width:100%;">Buy now</button>
+
+        <div style="margin-top:12px; color:var(--muted); font-size:14px">
+          <strong>Return policy:</strong> 30-day returns. <br/>
+          <strong>Warranty:</strong> 1 year limited.
+        </div>
+      </aside>
+    </div>
+
+    <!-- Tabs block -->
+    <div class="tabs" style="margin-top:18px">
+      <section class="desc" aria-labelledby="desc-title">
+        <h3 id="desc-title">Product details</h3>
+        <p>
+          The UltraComfort Headphones deliver rich, balanced audio with active noise cancellation (ANC), long battery life, and a comfy fit for long listening sessions. Ideal for commuting, remote work, and travel.
+        </p>
+
+        <h4 style="margin-top:14px">What's in the box</h4>
+        <ul>
+          <li>Headphones</li>
+          <li>USB‑C charging cable (30cm)</li>
+          <li>Carrying pouch</li>
+          <li>User guide</li>
+        </ul>
+
+        <h4 style="margin-top:14px">Specifications</h4>
+        <dl class="specs">
+          <dt>Driver</dt><dd>40 mm dynamic</dd>
+          <dt>Battery</dt><dd>40 hours (ANC off), 30 hours (ANC on)</dd>
+          <dt>Bluetooth</dt><dd>5.3 (AAC/aptX)</dd>
+          <dt>Weight</dt><dd>270 g</dd>
+        </dl>
+      </section>
+
+      <aside class="reviews" aria-labelledby="reviews-title">
+        <h3 id="reviews-title">Top reviews</h3>
+        <article style="margin-top:8px">
+          <strong>Jane D.</strong> <span style="color:var(--muted); font-size:13px"> — 5 stars</span>
+          <p style="margin:6px 0 0; color:var(--muted)">
+            Fantastic sound and ANC for the price. Comfortable for long flights.
+          </p>
+        </article>
+
+        <article style="margin-top:12px">
+          <strong>Mark P.</strong> <span style="color:var(--muted); font-size:13px"> — 4 stars</span>
+          <p style="margin:6px 0 0; color:var(--muted)">
+            Great battery life. Wish the case was sturdier.
+          </p>
+        </article>
+
+        <button class="btn secondary" style="margin-top:12px; width:100%">See all reviews</button>
+      </aside>
+    </div>
+
+  </div>
+
+<script>
+  // OPTIONAL: tiny JS for thumbnails + qty — remove if you want pure HTML/CSS
+  (function(){
+    const thumbs = document.querySelectorAll('.thumb');
+    const currentImg = document.getElementById('currentImage');
+    thumbs.forEach(t => {
+      t.addEventListener('click', ()=> {
+        thumbs.forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+        const src = t.getAttribute('data-src');
+        // swap to a larger variant if present
+        currentImg.src = src.replace('&w=800','&w=1200');
+        currentImg.alt = 'Product image';
+      });
+    });
+
+    // qty controls
+    const dec = document.getElementById('dec');
+    const inc = document.getElementById('inc');
+    const qty = document.getElementById('qty');
+    dec.addEventListener('click', ()=> { qty.value = Math.max(1, Number(qty.value||1)-1); });
+    inc.addEventListener('click', ()=> { qty.value = Math.max(1, Number(qty.value||1)+1); });
+
+    // add to cart demo
+    document.getElementById('addToCart').addEventListener('click', ()=> {
+      const q = qty.value || 1;
+      alert('Added ' + q + ' item(s) to cart (demo).');
+    });
+  })();
+</script>
+</body>
+</html>

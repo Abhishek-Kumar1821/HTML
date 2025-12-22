@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Function Return Example</title>
+</head>
+<body>
+
+<script>
+    
+    function calculatePercentage(totalMarks, marksObtained) {
+        var percent = (marksObtained / totalMarks) * 100;
+        return percent;   
+    }
+    var totalSubjects = 5;
+    var totalMarks = 500;
+    var marksObtained = 300;
+
+    var result = calculatePercentage(totalMarks, marksObtained);
+
+    document.write("Total Subjects = " + totalSubjects + "<br>");
+    document.write("Total Marks = " + totalMarks + "<br>");
+    document.write("Marks Obtained = " + marksObtained + "<br>");
+    document.write("Percentage = " + result + "%");
+</script>
+
+</body>
+</html>

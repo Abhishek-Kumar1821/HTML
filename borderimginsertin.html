@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box Model</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html, body{
+            height: 100vh;
+            width:100vw;
+        }
+        #box1{
+            height: 35%;
+            width:15%;
+            border: 5px solid red;
+            margin: auto;
+            margin-top: 10%;
+            background-color: darkgoldenrod;
+        }
+        .dept-image{
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <div id="box1">
+        
+            <img src="borderimg.jpg" alt="BCA Department Logo" class="dept-image">
+        </div>
+    </div>
+</body>
+</html>
