@@ -1,59 +1,29 @@
-// Heading change using DOM
-const heading = document.querySelector("#content h4");
-heading.textContent = "Available Courses";
 
-// Select all list items
-const listItems = document.querySelectorAll(".list_item");
+//Header title change
+var headerTitle = document.getElementById('header-title');
+headerTitle.textContent = "Ajit Kumar Sharma";
+//tagline change
+var tagline = document.getElementById('tagline');
+tagline.textContent = "Department of BCA";
+//Header border style change
+var header = document.getElementById('header');
+header.style.borderBottom = "5px solid #F00";
+//list item modifications
+var items = document.getElementsByClassName('list-item');
+//text change
+items[0].textContent = "BCA";
+items[1].textContent = "Physics";
 
-// Click event on each list item
-listItems.forEach(item => {
-  item.addEventListener("click", function () {
-    alert("You selected: " + this.textContent);
-    this.style.backgroundColor = "#aed6f1";
-  });
-});
+//style change
 
-// Form handling
-const form = document.querySelector("form");
-const input = document.querySelector("input[type='text']");
-const ul = document.getElementById("items");
+items[0].style.backgroundColor = "yellow";
+items[1].style.color = "red";
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Heading change using DOM
-  const heading = document.querySelector("#content h4");
-  if (heading) heading.textContent = "Available Courses";
+//All li background
 
-  // Select all list items and add click handlers
-  const listItems = document.querySelectorAll(".list_item");
-  listItems.forEach(item => {
-    item.addEventListener("click", function () {
-      alert("You selected: " + this.textContent.trim());
-      this.style.backgroundColor = "#aed6f1";
-    });
-  });
 
-  // Form handling
-  const form = document.querySelector("form");
-  const input = document.querySelector("input[type='text']");
-  const ul = document.getElementById("items");
-
-  if (form && input && ul) {
-    form.addEventListener("submit", function (e) {
-      e.preventDefault(); // stop page reload
-
-      const value = input.value.trim();
-      if (value !== "") {
-        const newLi = document.createElement("li");
-        newLi.className = "list_item";
-        newLi.textContent = value;
-        newLi.addEventListener("click", function () {
-          alert("You selected: " + this.textContent);
-          this.style.backgroundColor = "#aed6f1";
-        });
-        ul.appendChild(newLi);
-        input.value = "";
-        input.focus();
-      }
-    });
-  }
-});
+var li = document.getElementsByTagName('li');
+for (var i = 0; i < li.length; i++) {
+    li[i].style.backgroundColor = "lightyellow";
+};
+    
